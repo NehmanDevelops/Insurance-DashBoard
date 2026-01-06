@@ -3,7 +3,7 @@ import { create } from 'zustand'
 export const useDemoStore = create((set) => ({
   isDemoMode: false,
   currentStep: 0,
-  totalSteps: 12,
+  totalSteps: 15,
   
   startDemo: () => set({ isDemoMode: true, currentStep: 0 }),
   endDemo: () => set({ isDemoMode: false, currentStep: 0 }),

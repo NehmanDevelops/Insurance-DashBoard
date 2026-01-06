@@ -143,3 +143,47 @@
     top: auto !important;
   }
 }
+
+/* Meta info section */
+.demo-tooltip-meta {
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.demo-meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.demo-meta-item svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.demo-meta-item.zurich-value {
+  color: var(--zurich-blue);
+}
+
+.demo-meta-item.zurich-value svg {
+  color: #FFD700;
+}
+
+.demo-meta-item.tech-used {
+  color: var(--gray-600);
+}
+
+.demo-meta-item.tech-used svg {
+  color: var(--success);
+}
+
+.demo-meta-item strong {
+  font-weight: 600;
+}

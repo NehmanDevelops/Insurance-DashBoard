@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FiX, FiArrowLeft, FiArrowRight, FiCheck } from 'react-icons/fi'
+import { FiX, FiArrowLeft, FiArrowRight, FiCheck, FiCode, FiZap, FiLayers, FiDatabase, FiUsers, FiBarChart2 } from 'react-icons/fi'
 import { useDemoStore } from '../../store/demoStore'
 import './DemoTour.css'
 
@@ -9,56 +9,70 @@ const tourSteps = [
   {
     id: 1,
     target: '#sidebar',
-    title: 'Navigation Sidebar',
-    content: 'Access all main sections of the Claims Portal from here. The sidebar provides quick navigation to Dashboard, Claims, Analytics, Customers, Reports, and Settings.',
+    title: '📱 Component-Based Navigation',
+    content: 'This sidebar demonstrates React component architecture - a modular, reusable navigation system. Each nav item is dynamically rendered using map(), promoting DRY principles that Zurich values in maintainable codebases.',
+    zurichValue: 'Clean, modular architecture',
+    techUsed: 'React Router DOM, Framer Motion',
     position: 'right',
     route: '/'
   },
   {
     id: 2,
     target: '#search-bar',
-    title: 'Global Search',
-    content: 'Quickly search for claims, customers, or policies across the entire system. Use keyboard shortcut ⌘K for instant access.',
+    title: '🔍 Controlled Input Component',
+    content: 'The search uses React controlled components pattern with useState hooks. This ensures predictable behavior and easy testing - key principles for enterprise-grade applications at Zurich.',
+    zurichValue: 'Testable, predictable code',
+    techUsed: 'React Hooks, Debouncing',
     position: 'bottom',
     route: '/'
   },
   {
     id: 3,
     target: '#notifications-btn',
-    title: 'Real-time Notifications',
-    content: 'Stay updated with claim status changes, new submissions, and important alerts. All notifications are logged for audit purposes.',
+    title: '🔔 Real-time State Updates',
+    content: 'Notifications use Zustand for global state management - a lightweight alternative to Redux. This demonstrates understanding of modern state patterns that scale well for insurance claim workflows.',
+    zurichValue: 'Scalable state management',
+    techUsed: 'Zustand with persist middleware',
     position: 'bottom-left',
     route: '/'
   },
   {
     id: 4,
     target: '#stats-overview',
-    title: 'Key Performance Indicators',
-    content: 'Monitor critical metrics at a glance: total claims, processing times, approval rates, and customer satisfaction scores.',
+    title: '📊 Data-Driven KPIs',
+    content: 'These statistics are computed from the claims store using memoized selectors. Statistics like processing time and approval rates are crucial metrics for insurance operations at Zurich Canada.',
+    zurichValue: 'Data-driven decision making',
+    techUsed: 'Zustand selectors, useMemo',
     position: 'bottom',
     route: '/'
   },
   {
     id: 5,
     target: '#claims-chart',
-    title: 'Claims Analytics',
-    content: 'Visualize claim trends over time with interactive charts. Filter by date range, claim type, or status for deeper insights.',
+    title: '📈 Interactive Data Visualization',
+    content: 'Built with Recharts - a declarative charting library. These visualizations help Zurich adjusters identify claim trends, seasonal patterns, and potential fraud indicators through data analysis.',
+    zurichValue: 'Visual analytics for insights',
+    techUsed: 'Recharts, ResponsiveContainer',
     position: 'top',
     route: '/'
   },
   {
     id: 6,
     target: '#recent-claims',
-    title: 'Recent Claims Activity',
-    content: 'View the latest claims with quick actions. Click any claim to see full details, update status, or add notes.',
+    title: '📋 Optimized List Rendering',
+    content: 'The claims table uses efficient rendering with proper key props and pagination. This prevents performance issues when handling thousands of claims - essential for Zurich\'s high-volume operations.',
+    zurichValue: 'Performance optimization',
+    techUsed: 'React keys, Pagination state',
     position: 'top',
     route: '/'
   },
   {
     id: 7,
     target: '#nav-claims',
-    title: 'Claims Management',
-    content: "Let's explore the full Claims Management system where you can create, track, and process claims.",
+    title: '📁 Claims CRUD Operations',
+    content: 'Let\'s explore full claims management - Create, Read, Update, Delete. This showcases form handling, validation, and state persistence that mirrors real insurance claim workflows.',
+    zurichValue: 'Complete business logic',
+    techUsed: 'React Router, Form validation',
     position: 'right',
     route: '/',
     nextRoute: '/claims'
@@ -66,24 +80,30 @@ const tourSteps = [
   {
     id: 8,
     target: '#claims-filters',
-    title: 'Advanced Filtering',
-    content: 'Filter claims by status, type, priority, date range, and more. Save filter presets for quick access to common views.',
+    title: '🎛️ Advanced Filtering System',
+    content: 'Multi-criteria filtering with status, type, priority, and date ranges. Uses compound filtering logic that adjusters at Zurich would use daily to manage their claim queues efficiently.',
+    zurichValue: 'User-centric workflow design',
+    techUsed: 'Array filter/reduce, URL params',
     position: 'bottom',
     route: '/claims'
   },
   {
     id: 9,
     target: '#claims-table',
-    title: 'Claims Table',
-    content: 'Full-featured claims list with sorting, pagination, and bulk actions. Click any row to view or edit claim details.',
+    title: '📊 Enterprise Data Grid',
+    content: 'Features sorting, bulk selection, action menus, and CSV export. Demonstrates handling complex UI interactions while maintaining code readability - crucial for team collaboration at Zurich.',
+    zurichValue: 'Collaborative, readable code',
+    techUsed: 'Complex state, Event handlers',
     position: 'top',
     route: '/claims'
   },
   {
     id: 10,
     target: '#nav-analytics',
-    title: 'Analytics Dashboard',
-    content: "Explore comprehensive analytics and reporting tools for data-driven decision making.",
+    title: '📉 Analytics & Reporting',
+    content: 'Advanced analytics with trend analysis, KPIs, and adjuster performance metrics. Shows ability to transform raw data into actionable insights for Zurich management.',
+    zurichValue: 'Business intelligence',
+    techUsed: 'Recharts, Data aggregation',
     position: 'right',
     route: '/claims',
     nextRoute: '/analytics'
@@ -91,18 +111,55 @@ const tourSteps = [
   {
     id: 11,
     target: '#analytics-overview',
-    title: 'Performance Analytics',
-    content: 'Track KPIs, identify trends, and generate reports. Export data in multiple formats for external analysis.',
+    title: '🎯 Performance Dashboards',
+    content: 'Real-time KPIs, approval rates, and processing trends. These metrics help Zurich managers monitor team performance and identify bottlenecks in claim processing.',
+    zurichValue: 'Operational excellence',
+    techUsed: 'Date-fns, Statistical calculations',
     position: 'bottom',
     route: '/analytics'
   },
   {
     id: 12,
-    target: '#nav-dashboard',
-    title: 'Tour Complete!',
-    content: "You've seen the key features of the Zurich Claims Portal. Feel free to explore more on your own. Click 'Finish' to start using the system.",
+    target: '#nav-customers',
+    title: '👥 Customer Management',
+    content: 'CRM functionality with customer profiles, claim history, and contact management. Demonstrates understanding of insurance customer relationships critical to Zurich\'s service.',
+    zurichValue: 'Customer-first approach',
+    techUsed: 'Grid/List views, Search filtering',
     position: 'right',
     route: '/analytics',
+    nextRoute: '/customers'
+  },
+  {
+    id: 13,
+    target: '#nav-reports',
+    title: '📄 Report Generation',
+    content: 'Scheduled and on-demand reporting system. Shows understanding of insurance compliance requirements and audit trails that Zurich requires for regulatory purposes.',
+    zurichValue: 'Compliance & audit trails',
+    techUsed: 'Async operations, File exports',
+    position: 'right',
+    route: '/customers',
+    nextRoute: '/reports'
+  },
+  {
+    id: 14,
+    target: '#nav-settings',
+    title: '⚙️ User Preferences',
+    content: 'Comprehensive settings with profile management, security options, and preferences. Demonstrates form handling best practices and attention to user experience.',
+    zurichValue: 'User experience focus',
+    techUsed: 'Form state, Toggle components',
+    position: 'right',
+    route: '/reports',
+    nextRoute: '/settings'
+  },
+  {
+    id: 15,
+    target: '#nav-dashboard',
+    title: '🎉 Tour Complete!',
+    content: 'You\'ve seen how this dashboard demonstrates modern React development practices aligned with Zurich\'s values: clean code, scalable architecture, user-centric design, and business-focused features. Built by Nehman Rahimi.',
+    zurichValue: 'Full-stack excellence',
+    techUsed: 'React 19, Zustand, Recharts, Vite',
+    position: 'right',
+    route: '/settings',
     nextRoute: '/'
   }
 ]
@@ -254,6 +311,19 @@ function DemoTour() {
 
           <h3 className="demo-tooltip-title">{step.title}</h3>
           <p className="demo-tooltip-content">{step.content}</p>
+          
+          {step.zurichValue && (
+            <div className="demo-tooltip-meta">
+              <div className="demo-meta-item zurich-value">
+                <FiZap size={14} />
+                <span><strong>Zurich Value:</strong> {step.zurichValue}</span>
+              </div>
+              <div className="demo-meta-item tech-used">
+                <FiCode size={14} />
+                <span><strong>Tech:</strong> {step.techUsed}</span>
+              </div>
+            </div>
+          )}
 
           <div className="demo-progress">
             <div className="demo-progress-bar">

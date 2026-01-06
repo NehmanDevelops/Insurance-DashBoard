@@ -1,14 +1,25 @@
 import { motion } from 'framer-motion'
-import { FiPlay, FiX, FiCheck, FiArrowRight } from 'react-icons/fi'
+import { FiPlay, FiX, FiCheck, FiArrowRight, FiCode, FiGithub } from 'react-icons/fi'
 import './WelcomeModal.css'
 
 function WelcomeModal({ onStartDemo, onSkip }) {
   const features = [
     'Real-time claims tracking and management',
-    'Advanced analytics and reporting',
-    'Customer relationship management',
-    'Automated workflow processing',
-    'Compliance and audit trails'
+    'Advanced analytics with Recharts visualization',
+    'Customer relationship management (CRM)',
+    'Zustand state management for enterprise scalability',
+    'React Query for efficient data fetching',
+    'Framer Motion animations for modern UX',
+    'Fully responsive design with CSS Grid/Flexbox'
+  ]
+
+  const techStack = [
+    { name: 'React 19', desc: 'Latest React with hooks' },
+    { name: 'Zustand', desc: 'Lightweight state management' },
+    { name: 'React Query', desc: 'Server state management' },
+    { name: 'Recharts', desc: 'Data visualization' },
+    { name: 'Framer Motion', desc: 'Smooth animations' },
+    { name: 'Vite', desc: 'Fast build tooling' }
   ]
 
   return (
@@ -28,6 +39,28 @@ function WelcomeModal({ onStartDemo, onSkip }) {
           <FiX size={20} />
         </button>
 
+        {/* TLDR Banner */}
+        <motion.div 
+          className="tldr-banner"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <FiCode className="tldr-icon" />
+          <div className="tldr-content">
+            <span className="tldr-label">TL;DR</span>
+            <span className="tldr-text">MADE BY <strong>NEHMAN RAHIMI</strong> TO CONTRIBUTE TO <strong>ZURICH CANADA</strong></span>
+          </div>
+          <a 
+            href="https://github.com/NehmanDevelops/Insurance-DashBoard" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="tldr-github"
+          >
+            <FiGithub size={18} />
+          </a>
+        </motion.div>
+
         <div className="welcome-header">
           <div className="welcome-logo">
             <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,22 +69,22 @@ function WelcomeModal({ onStartDemo, onSkip }) {
               <path d="M30 18V42M18 30H42" stroke="white" strokeWidth="4" strokeLinecap="round"/>
             </svg>
           </div>
-          <h1>Welcome to Zurich Claims Portal</h1>
+          <h1>Zurich Claims Portal</h1>
           <p className="welcome-subtitle">
-            Your comprehensive insurance claims management solution for Zurich Canada
+            Enterprise-grade Insurance Claims Management System demonstrating modern React development practices
           </p>
         </div>
 
         <div className="welcome-content">
           <div className="welcome-features">
-            <h3>What you can do:</h3>
+            <h3>🎯 What This Dashboard Showcases:</h3>
             <ul>
               {features.map((feature, index) => (
                 <motion.li 
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 + index * 0.1 }}
+                  transition={{ delay: 0.2 + index * 0.08 }}
                 >
                   <FiCheck className="check-icon" />
                   <span>{feature}</span>
@@ -60,18 +93,43 @@ function WelcomeModal({ onStartDemo, onSkip }) {
             </ul>
           </div>
 
-          <div className="welcome-stats">
-            <div className="stat-item">
-              <span className="stat-value">50+</span>
-              <span className="stat-label">Active Claims</span>
+          <div className="welcome-tech">
+            <h3>🛠️ Tech Stack Used:</h3>
+            <div className="tech-grid">
+              {techStack.map((tech, index) => (
+                <motion.div 
+                  key={tech.name}
+                  className="tech-item"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 + index * 0.05 }}
+                >
+                  <span className="tech-name">{tech.name}</span>
+                  <span className="tech-desc">{tech.desc}</span>
+                </motion.div>
+              ))}
             </div>
-            <div className="stat-item">
-              <span className="stat-value">94%</span>
-              <span className="stat-label">Satisfaction</span>
+          </div>
+        </div>
+
+        <div className="zurich-values">
+          <h3>💼 Aligned with Zurich's Developer Values:</h3>
+          <div className="values-grid">
+            <div className="value-item">
+              <span className="value-title">Clean Code</span>
+              <span className="value-desc">Modular, maintainable architecture</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-value">4.2</span>
-              <span className="stat-label">Avg Days</span>
+            <div className="value-item">
+              <span className="value-title">User-Centric</span>
+              <span className="value-desc">Intuitive UX with accessibility</span>
+            </div>
+            <div className="value-item">
+              <span className="value-title">Scalable</span>
+              <span className="value-desc">Enterprise-ready patterns</span>
+            </div>
+            <div className="value-item">
+              <span className="value-title">Innovative</span>
+              <span className="value-desc">Latest React 19 features</span>
             </div>
           </div>
         </div>
@@ -88,7 +146,7 @@ function WelcomeModal({ onStartDemo, onSkip }) {
         </div>
 
         <div className="welcome-footer">
-          <p>© 2025 Zurich Insurance Canada • Claims Management System v2.0</p>
+          <p>Built with ❤️ by Nehman Rahimi for Zurich Canada • January 2026</p>
         </div>
       </motion.div>
     </motion.div>
