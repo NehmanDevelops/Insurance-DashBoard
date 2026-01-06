@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FiX, FiArrowLeft, FiArrowRight, FiCheck, FiCode, FiZap, FiLayers, FiDatabase, FiUsers, FiBarChart2 } from 'react-icons/fi'
+import { FiX, FiArrowLeft, FiArrowRight, FiCheck, FiPhone, FiClock, FiUpload, FiShield, FiBell, FiDollarSign } from 'react-icons/fi'
 import { useDemoStore } from '../../store/demoStore'
 import './DemoTour.css'
 
@@ -9,155 +9,103 @@ const tourSteps = [
   {
     id: 1,
     target: '#sidebar',
-    title: '📱 Component-Based Navigation',
-    content: 'This sidebar demonstrates React component architecture - a modular, reusable navigation system. Each nav item is dynamically rendered using map(), promoting DRY principles that Zurich values in maintainable codebases.',
-    zurichValue: 'Clean, modular architecture',
-    techUsed: 'React Router DOM, Framer Motion',
+    title: '👋 Welcome to Your Claims Portal',
+    content: 'This self-service portal lets you track claims, upload documents, and get real-time updates — all without calling our support line. Let\'s see how it saves you time!',
+    benefit: 'No more waiting on hold',
+    problem: '40% of support calls are just status checks',
     position: 'right',
     route: '/'
   },
   {
     id: 2,
-    target: '#search-bar',
-    title: '🔍 Controlled Input Component',
-    content: 'The search uses React controlled components pattern with useState hooks. This ensures predictable behavior and easy testing - key principles for enterprise-grade applications at Zurich.',
-    zurichValue: 'Testable, predictable code',
-    techUsed: 'React Hooks, Debouncing',
+    target: '#stats-overview',
+    title: '📊 Your Claims at a Glance',
+    content: 'See all your active claims, pending actions, and approved amounts in one place. No more searching through emails or waiting for callbacks.',
+    benefit: '24/7 access to your claim status',
+    problem: 'Customers want info outside business hours',
     position: 'bottom',
     route: '/'
   },
   {
     id: 3,
-    target: '#notifications-btn',
-    title: '🔔 Real-time State Updates',
-    content: 'Notifications use Zustand for global state management - a lightweight alternative to Redux. This demonstrates understanding of modern state patterns that scale well for insurance claim workflows.',
-    zurichValue: 'Scalable state management',
-    techUsed: 'Zustand with persist middleware',
-    position: 'bottom-left',
+    target: '#recent-claims',
+    title: '📋 Track Every Claim in Real-Time',
+    content: 'Each claim shows its current status with a visual progress tracker. Watch your claim move from Submitted → Under Review → Decision → Payment.',
+    benefit: 'Instant status visibility',
+    problem: 'Average hold time for status: 15 minutes',
+    position: 'top',
     route: '/'
   },
   {
     id: 4,
-    target: '#stats-overview',
-    title: '📊 Data-Driven KPIs',
-    content: 'These statistics are computed from the claims store using memoized selectors. Statistics like processing time and approval rates are crucial metrics for insurance operations at Zurich Canada.',
-    zurichValue: 'Data-driven decision making',
-    techUsed: 'Zustand selectors, useMemo',
-    position: 'bottom',
+    target: '#notifications-btn',
+    title: '🔔 Automatic Status Notifications',
+    content: 'Get notified instantly when your claim status changes. No need to check repeatedly — we\'ll tell you when there\'s news.',
+    benefit: 'Proactive updates save time',
+    problem: 'Customers call multiple times for updates',
+    position: 'bottom-left',
     route: '/'
   },
   {
     id: 5,
-    target: '#claims-chart',
-    title: '📈 Interactive Data Visualization',
-    content: 'Built with Recharts - a declarative charting library. These visualizations help Zurich adjusters identify claim trends, seasonal patterns, and potential fraud indicators through data analysis.',
-    zurichValue: 'Visual analytics for insights',
-    techUsed: 'Recharts, ResponsiveContainer',
-    position: 'top',
-    route: '/'
-  },
-  {
-    id: 6,
-    target: '#recent-claims',
-    title: '📋 Optimized List Rendering',
-    content: 'The claims table uses efficient rendering with proper key props and pagination. This prevents performance issues when handling thousands of claims - essential for Zurich\'s high-volume operations.',
-    zurichValue: 'Performance optimization',
-    techUsed: 'React keys, Pagination state',
-    position: 'top',
-    route: '/'
-  },
-  {
-    id: 7,
     target: '#nav-claims',
-    title: '📁 Claims CRUD Operations',
-    content: 'Let\'s explore full claims management - Create, Read, Update, Delete. This showcases form handling, validation, and state persistence that mirrors real insurance claim workflows.',
-    zurichValue: 'Complete business logic',
-    techUsed: 'React Router, Form validation',
+    title: '📁 View All Your Claims',
+    content: 'Access your complete claims history. Filter by status, type, or date to find exactly what you need.',
+    benefit: 'Complete history at your fingertips',
+    problem: 'Hard to track multiple claims',
     position: 'right',
     route: '/',
     nextRoute: '/claims'
   },
   {
-    id: 8,
+    id: 6,
     target: '#claims-filters',
-    title: '🎛️ Advanced Filtering System',
-    content: 'Multi-criteria filtering with status, type, priority, and date ranges. Uses compound filtering logic that adjusters at Zurich would use daily to manage their claim queues efficiently.',
-    zurichValue: 'User-centric workflow design',
-    techUsed: 'Array filter/reduce, URL params',
+    title: '🔍 Find Claims Quickly',
+    content: 'Use filters to find specific claims by status (Pending, Approved, Paid) or claim type (Auto, Property, Health). Search by claim number for instant results.',
+    benefit: 'Find any claim in seconds',
+    problem: 'Customers forget claim numbers',
     position: 'bottom',
     route: '/claims'
   },
   {
-    id: 9,
+    id: 7,
     target: '#claims-table',
-    title: '📊 Enterprise Data Grid',
-    content: 'Features sorting, bulk selection, action menus, and CSV export. Demonstrates handling complex UI interactions while maintaining code readability - crucial for team collaboration at Zurich.',
-    zurichValue: 'Collaborative, readable code',
-    techUsed: 'Complex state, Event handlers',
+    title: '📊 Detailed Claim Information',
+    content: 'Click any claim to see full details: timeline of events, adjuster contact info, uploaded documents, and estimated payment dates.',
+    benefit: 'All details in one place',
+    problem: 'Information scattered across systems',
     position: 'top',
     route: '/claims'
   },
   {
-    id: 10,
-    target: '#nav-analytics',
-    title: '📉 Analytics & Reporting',
-    content: 'Advanced analytics with trend analysis, KPIs, and adjuster performance metrics. Shows ability to transform raw data into actionable insights for Zurich management.',
-    zurichValue: 'Business intelligence',
-    techUsed: 'Recharts, Data aggregation',
+    id: 8,
+    target: '#nav-new-claim',
+    title: '➕ File New Claims Online',
+    content: 'Submit new claims 24/7 without calling. Upload photos, documents, and descriptions directly from your phone or computer.',
+    benefit: 'File claims anytime, anywhere',
+    problem: 'Office hours limit when customers can file',
     position: 'right',
     route: '/claims',
-    nextRoute: '/analytics'
+    nextRoute: '/claims/new'
   },
   {
-    id: 11,
-    target: '#analytics-overview',
-    title: '🎯 Performance Dashboards',
-    content: 'Real-time KPIs, approval rates, and processing trends. These metrics help Zurich managers monitor team performance and identify bottlenecks in claim processing.',
-    zurichValue: 'Operational excellence',
-    techUsed: 'Date-fns, Statistical calculations',
-    position: 'bottom',
-    route: '/analytics'
-  },
-  {
-    id: 12,
-    target: '#nav-customers',
-    title: '👥 Customer Management',
-    content: 'CRM functionality with customer profiles, claim history, and contact management. Demonstrates understanding of insurance customer relationships critical to Zurich\'s service.',
-    zurichValue: 'Customer-first approach',
-    techUsed: 'Grid/List views, Search filtering',
-    position: 'right',
-    route: '/analytics',
-    nextRoute: '/customers'
-  },
-  {
-    id: 13,
-    target: '#nav-reports',
-    title: '📄 Report Generation',
-    content: 'Scheduled and on-demand reporting system. Shows understanding of insurance compliance requirements and audit trails that Zurich requires for regulatory purposes.',
-    zurichValue: 'Compliance & audit trails',
-    techUsed: 'Async operations, File exports',
-    position: 'right',
-    route: '/customers',
-    nextRoute: '/reports'
-  },
-  {
-    id: 14,
+    id: 9,
     target: '#nav-settings',
-    title: '⚙️ User Preferences',
-    content: 'Comprehensive settings with profile management, security options, and preferences. Demonstrates form handling best practices and attention to user experience.',
-    zurichValue: 'User experience focus',
-    techUsed: 'Form state, Toggle components',
+    title: '👤 Manage Your Profile',
+    content: 'Update your contact info, notification preferences, and payment details. Keep everything current so claims process faster.',
+    benefit: 'Self-service account management',
+    problem: 'Outdated info delays claims',
     position: 'right',
-    route: '/reports',
+    route: '/claims/new',
     nextRoute: '/settings'
   },
   {
-    id: 15,
+    id: 10,
     target: '#nav-dashboard',
-    title: '🎉 Tour Complete!',
-    content: 'You\'ve seen how this dashboard demonstrates modern React development practices aligned with Zurich\'s values: clean code, scalable architecture, user-centric design, and business-focused features. Built by Nehman Rahimi.',
-    zurichValue: 'Full-stack excellence',
-    techUsed: 'React 19, Zustand, Recharts, Vite',
+    title: '🎉 You\'re All Set!',
+    content: 'This self-service portal reduces call center volume by 40% while giving you 24/7 access. Track claims, upload documents, and get updates instantly. Built by Nehman Rahimi for Zurich Canada.',
+    benefit: 'Better service, lower costs',
+    problem: 'Each status call costs $8-12',
     position: 'right',
     route: '/settings',
     nextRoute: '/'
@@ -312,15 +260,15 @@ function DemoTour() {
           <h3 className="demo-tooltip-title">{step.title}</h3>
           <p className="demo-tooltip-content">{step.content}</p>
           
-          {step.zurichValue && (
+          {step.benefit && (
             <div className="demo-tooltip-meta">
-              <div className="demo-meta-item zurich-value">
-                <FiZap size={14} />
-                <span><strong>Zurich Value:</strong> {step.zurichValue}</span>
+              <div className="demo-meta-item benefit">
+                <FiCheck size={14} />
+                <span><strong>Benefit:</strong> {step.benefit}</span>
               </div>
-              <div className="demo-meta-item tech-used">
-                <FiCode size={14} />
-                <span><strong>Tech:</strong> {step.techUsed}</span>
+              <div className="demo-meta-item problem">
+                <FiDollarSign size={14} />
+                <span><strong>Problem Solved:</strong> {step.problem}</span>
               </div>
             </div>
           )}

@@ -184,6 +184,22 @@
   color: var(--success);
 }
 
+.demo-meta-item.benefit {
+  color: var(--success);
+}
+
+.demo-meta-item.benefit svg {
+  color: var(--success);
+}
+
+.demo-meta-item.problem {
+  color: var(--gray-600);
+}
+
+.demo-meta-item.problem svg {
+  color: var(--warning);
+}
+
 .demo-meta-item strong {
   font-weight: 600;
 }

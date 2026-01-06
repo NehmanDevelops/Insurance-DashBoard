@@ -4,28 +4,26 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { 
   FiHome, 
   FiFileText, 
-  FiBarChart2, 
-  FiUsers, 
+  FiUpload,
+  FiUser,
   FiSettings,
   FiMenu,
   FiX,
-  FiPieChart,
   FiLogOut,
   FiBell,
   FiSearch,
   FiHelpCircle,
-  FiChevronDown
+  FiChevronDown,
+  FiPhone
 } from 'react-icons/fi'
 import { useDemoStore } from '../../store/demoStore'
 import './Layout.css'
 
 const navItems = [
-  { path: '/', icon: FiHome, label: 'Dashboard', id: 'nav-dashboard' },
-  { path: '/claims', icon: FiFileText, label: 'Claims', id: 'nav-claims' },
-  { path: '/analytics', icon: FiBarChart2, label: 'Analytics', id: 'nav-analytics' },
-  { path: '/customers', icon: FiUsers, label: 'Customers', id: 'nav-customers' },
-  { path: '/reports', icon: FiPieChart, label: 'Reports', id: 'nav-reports' },
-  { path: '/settings', icon: FiSettings, label: 'Settings', id: 'nav-settings' },
+  { path: '/', icon: FiHome, label: 'My Claims', id: 'nav-dashboard' },
+  { path: '/claims', icon: FiFileText, label: 'Track Claims', id: 'nav-claims' },
+  { path: '/claims/new', icon: FiUpload, label: 'File New Claim', id: 'nav-new-claim' },
+  { path: '/settings', icon: FiUser, label: 'My Profile', id: 'nav-settings' },
 ]
 
 function Layout({ children }) {
@@ -37,10 +35,10 @@ function Layout({ children }) {
   const { isDemoMode, startDemo } = useDemoStore()
 
   const notifications = [
-    { id: 1, title: 'New claim submitted', message: 'CLM-2025-00051 requires review', time: '5 min ago', unread: true },
-    { id: 2, title: 'Claim approved', message: 'CLM-2025-00032 has been approved', time: '1 hour ago', unread: true },
-    { id: 3, title: 'Document uploaded', message: 'New documents for CLM-2025-00045', time: '2 hours ago', unread: false },
-    { id: 4, title: 'Payment processed', message: 'Payment sent for CLM-2025-00028', time: '3 hours ago', unread: false },
+    { id: 1, title: 'Claim status updated', message: 'Your auto claim CLM-2025-00051 is now Under Review', time: '5 min ago', unread: true },
+    { id: 2, title: 'Document received', message: 'We received your photos for CLM-2025-00051', time: '1 hour ago', unread: true },
+    { id: 3, title: 'Action needed', message: 'Please upload police report for CLM-2025-00045', time: '2 hours ago', unread: false },
+    { id: 4, title: 'Payment sent!', message: '$2,340 deposited for CLM-2025-00028', time: 'Yesterday', unread: false },
   ]
 
   return (
@@ -63,7 +61,7 @@ function Layout({ children }) {
                 className="logo-text"
               >
                 <span className="logo-title">Zurich</span>
-                <span className="logo-subtitle">Claims Portal</span>
+                <span className="logo-subtitle">Customer Portal</span>
               </motion.div>
             )}
           </div>
@@ -126,7 +124,7 @@ function Layout({ children }) {
               <FiSearch size={18} />
               <input 
                 type="text" 
-                placeholder="Search claims, customers, policies..." 
+                placeholder="Search your claims..." 
                 className="search-input"
               />
               <span className="search-shortcut">⌘K</span>
@@ -187,11 +185,11 @@ function Layout({ children }) {
                   aria-label="User menu"
                 >
                   <div className="user-avatar">
-                    <span>ZA</span>
+                    <span>JD</span>
                   </div>
                   <div className="user-info hide-mobile">
-                    <span className="user-name">Zurich Admin</span>
-                    <span className="user-role">Claims Manager</span>
+                    <span className="user-name">John Doe</span>
+                    <span className="user-role">Policy #POL-847291</span>
                   </div>
                   <FiChevronDown size={16} className="hide-mobile" />
                 </button>
@@ -205,7 +203,7 @@ function Layout({ children }) {
                       exit={{ opacity: 0, y: -10 }}
                     >
                       <div className="dropdown-item">
-                        <FiUsers size={18} />
+                        <FiUser size={18} />
                         <span>My Profile</span>
                       </div>
                       <div className="dropdown-item">
@@ -213,8 +211,12 @@ function Layout({ children }) {
                         <span>Account Settings</span>
                       </div>
                       <div className="dropdown-item">
+                        <FiPhone size={18} />
+                        <span>Contact Support</span>
+                      </div>
+                      <div className="dropdown-item">
                         <FiHelpCircle size={18} />
-                        <span>Help & Support</span>
+                        <span>Help & FAQ</span>
                       </div>
                       <hr className="dropdown-divider" />
                       <div className="dropdown-item text-danger">

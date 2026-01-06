@@ -1,25 +1,23 @@
 import { motion } from 'framer-motion'
-import { FiPlay, FiX, FiCheck, FiArrowRight, FiCode, FiGithub } from 'react-icons/fi'
+import { FiPlay, FiX, FiCheck, FiArrowRight, FiCode, FiGithub, FiPhone, FiClock, FiUpload, FiShield } from 'react-icons/fi'
 import './WelcomeModal.css'
 
 function WelcomeModal({ onStartDemo, onSkip }) {
   const features = [
-    'Real-time claims tracking and management',
-    'Advanced analytics with Recharts visualization',
-    'Customer relationship management (CRM)',
-    'Zustand state management for enterprise scalability',
-    'React Query for efficient data fetching',
-    'Framer Motion animations for modern UX',
-    'Fully responsive design with CSS Grid/Flexbox'
+    'Track your claim status in real-time — no phone calls needed',
+    'Upload supporting documents securely from anywhere',
+    'Get instant notifications when your claim status changes',
+    'View your complete claims history at a glance',
+    'File new claims 24/7 without waiting on hold',
+    'Access detailed timelines showing every step of your claim',
+    'Mobile-friendly — check your claims from any device'
   ]
 
-  const techStack = [
-    { name: 'React 19', desc: 'Latest React with hooks' },
-    { name: 'Zustand', desc: 'Lightweight state management' },
-    { name: 'React Query', desc: 'Server state management' },
-    { name: 'Recharts', desc: 'Data visualization' },
-    { name: 'Framer Motion', desc: 'Smooth animations' },
-    { name: 'Vite', desc: 'Fast build tooling' }
+  const benefits = [
+    { icon: FiPhone, title: 'Reduce Call Wait Times', desc: 'Self-service reduces call center volume by 40%' },
+    { icon: FiClock, title: '24/7 Access', desc: 'Check your claim status anytime, anywhere' },
+    { icon: FiUpload, title: 'Easy Document Upload', desc: 'Drag & drop supporting documents securely' },
+    { icon: FiShield, title: 'Secure & Private', desc: 'Bank-level encryption protects your data' }
   ]
 
   return (
@@ -69,15 +67,15 @@ function WelcomeModal({ onStartDemo, onSkip }) {
               <path d="M30 18V42M18 30H42" stroke="white" strokeWidth="4" strokeLinecap="round"/>
             </svg>
           </div>
-          <h1>Zurich Claims Portal</h1>
+          <h1>Customer Claims Portal</h1>
           <p className="welcome-subtitle">
-            Enterprise-grade Insurance Claims Management System demonstrating modern React development practices
+            Track your insurance claims, upload documents, and get real-time status updates — all without making a phone call
           </p>
         </div>
 
         <div className="welcome-content">
           <div className="welcome-features">
-            <h3>🎯 What This Dashboard Showcases:</h3>
+            <h3>🎯 What You Can Do Here:</h3>
             <ul>
               {features.map((feature, index) => (
                 <motion.li 
@@ -93,19 +91,20 @@ function WelcomeModal({ onStartDemo, onSkip }) {
             </ul>
           </div>
 
-          <div className="welcome-tech">
-            <h3>🛠️ Tech Stack Used:</h3>
-            <div className="tech-grid">
-              {techStack.map((tech, index) => (
+          <div className="welcome-benefits">
+            <h3>💡 Why Self-Service?</h3>
+            <div className="benefits-grid">
+              {benefits.map((benefit, index) => (
                 <motion.div 
-                  key={tech.name}
-                  className="tech-item"
+                  key={benefit.title}
+                  className="benefit-item"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.3 + index * 0.05 }}
                 >
-                  <span className="tech-name">{tech.name}</span>
-                  <span className="tech-desc">{tech.desc}</span>
+                  <benefit.icon className="benefit-icon" size={24} />
+                  <span className="benefit-title">{benefit.title}</span>
+                  <span className="benefit-desc">{benefit.desc}</span>
                 </motion.div>
               ))}
             </div>
@@ -113,23 +112,23 @@ function WelcomeModal({ onStartDemo, onSkip }) {
         </div>
 
         <div className="zurich-values">
-          <h3>💼 Aligned with Zurich's Developer Values:</h3>
+          <h3>📊 The Problem We're Solving:</h3>
           <div className="values-grid">
             <div className="value-item">
-              <span className="value-title">Clean Code</span>
-              <span className="value-desc">Modular, maintainable architecture</span>
+              <span className="value-title">40% of Calls</span>
+              <span className="value-desc">Are customers asking "Where's my claim?"</span>
             </div>
             <div className="value-item">
-              <span className="value-title">User-Centric</span>
-              <span className="value-desc">Intuitive UX with accessibility</span>
+              <span className="value-title">15 min Avg Wait</span>
+              <span className="value-desc">Average hold time for claim status</span>
             </div>
             <div className="value-item">
-              <span className="value-title">Scalable</span>
-              <span className="value-desc">Enterprise-ready patterns</span>
+              <span className="value-title">$8-12 per Call</span>
+              <span className="value-desc">Cost to handle each status inquiry</span>
             </div>
             <div className="value-item">
-              <span className="value-title">Innovative</span>
-              <span className="value-desc">Latest React 19 features</span>
+              <span className="value-title">24/7 Demand</span>
+              <span className="value-desc">Customers want access outside business hours</span>
             </div>
           </div>
         </div>
@@ -137,16 +136,16 @@ function WelcomeModal({ onStartDemo, onSkip }) {
         <div className="welcome-actions">
           <button className="btn btn-primary btn-lg" onClick={onStartDemo}>
             <FiPlay size={18} />
-            Start Interactive Demo
+            See How It Works
           </button>
           <button className="btn btn-ghost" onClick={onSkip}>
-            Skip and explore on my own
+            Skip and explore the portal
             <FiArrowRight size={16} />
           </button>
         </div>
 
         <div className="welcome-footer">
-          <p>Built with ❤️ by Nehman Rahimi for Zurich Canada • January 2026</p>
+          <p>Built with ❤️ by Nehman Rahimi • A Self-Service Solution for Zurich Canada • January 2026</p>
         </div>
       </motion.div>
     </motion.div>

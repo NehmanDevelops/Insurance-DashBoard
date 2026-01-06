@@ -18,11 +18,58 @@ import {
   FiAlertCircle,
   FiMessageSquare,
   FiPaperclip,
-  FiPlus
+  FiPlus,
+  FiHelpCircle
 } from 'react-icons/fi'
 import { useClaimsStore } from '../../store/claimsStore'
 import { format } from 'date-fns'
+import DocumentUpload from '../../components/DocumentUpload/DocumentUpload'
 import './ClaimDetails.css'
+
+// Claim Progress Tracker Component (customer-focused)
+function ClaimProgressTracker({ status }) {
+  const steps = [
+    { key: 'submitted', label: 'Submitted', icon: FiFileText },
+    { key: 'review', label: 'Under Review', icon: FiClock },
+    { key: 'decision', label: 'Decision', icon: FiCheckCircle },
+    { key: 'payment', label: 'Payment', icon: FiDollarSign }
+  ]
+  
+  const statusMap = {
+    'Pending': 1,
+    'Under Review': 2,
+    'Approved': 3,
+    'Denied': 3,
+    'Paid': 4
+  }
+  
+  const currentStep = statusMap[status] || 1
+  const isDenied = status === 'Denied'
+
+  return (
+    <div className="detail-progress-tracker">
+      {steps.map((step, index) => {
+        const StepIcon = step.icon
+        const isCompleted = currentStep > index + 1
+        const isCurrent = currentStep === index + 1
+        const showDenied = isDenied && step.key === 'decision'
+        
+        return (
+          <div 
+            key={step.key} 
+            className={`progress-step ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${showDenied ? 'denied' : ''}`}
+          >
+            <div className="step-icon">
+              {isCompleted ? <FiCheckCircle size={20} /> : <StepIcon size={20} />}
+            </div>
+            <span className="step-label">{showDenied ? 'Denied' : step.label}</span>
+            {index < steps.length - 1 && <div className="step-connector" />}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
 
 function ClaimDetails() {
   const { id } = useParams()
@@ -93,7 +140,7 @@ function ClaimDetails() {
         <div className="header-left">
           <Link to="/claims" className="back-link">
             <FiArrowLeft size={20} />
-            Back to Claims
+            Back to My Claims
           </Link>
           <div className="claim-title">
             <h1>{claim.claimNumber}</h1>
@@ -102,24 +149,25 @@ function ClaimDetails() {
             </span>
           </div>
           <p className="claim-meta">
-            Created on {format(new Date(claim.createdAt), 'MMMM dd, yyyy')} • 
+            Filed on {format(new Date(claim.createdAt), 'MMMM dd, yyyy')} • 
             Last updated {format(new Date(claim.updatedAt), 'MMM dd, yyyy')}
           </p>
         </div>
         <div className="header-actions">
           <button className="btn btn-secondary">
+            <FiHelpCircle size={16} />
+            Get Help
+          </button>
+          <button className="btn btn-primary">
             <FiDownload size={16} />
-            Export
-          </button>
-          <button className="btn btn-secondary">
-            <FiEdit size={16} />
-            Edit
-          </button>
-          <button className="btn btn-danger" onClick={handleDelete}>
-            <FiTrash2 size={16} />
-            Delete
+            Download Summary
           </button>
         </div>
+      </div>
+
+      {/* Progress Tracker */}
+      <div className="claim-progress-section">
+        <ClaimProgressTracker status={claim.status} />
       </div>
 
       {/* Tabs */}
@@ -340,30 +388,45 @@ function ClaimDetails() {
         {/* Documents Tab */}
         {activeTab === 'documents' && (
           <motion.div 
-            className="card documents-card"
+            className="documents-section"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <div className="card-header">
-              <h3 className="card-title">Documents</h3>
-              <button className="btn btn-primary btn-sm">
-                <FiPlus size={14} />
-                Upload Document
-              </button>
-            </div>
-            <div className="documents-list">
-              {Array.from({ length: claim.documents }, (_, i) => (
-                <div key={i} className="document-item">
+            {/* Document Upload Component */}
+            <DocumentUpload 
+              claimId={claim.id} 
+              onUploadComplete={(data) => console.log('Upload complete:', data)} 
+            />
+            
+            {/* Existing Documents */}
+            <div className="card documents-card">
+              <div className="card-header">
+                <h3 className="card-title">
                   <FiPaperclip size={18} />
-                  <div className="document-info">
-                    <span className="document-name">Document_{i + 1}.pdf</span>
-                    <span className="document-meta">Uploaded on {format(new Date(claim.createdAt), 'MMM dd, yyyy')}</span>
+                  Uploaded Documents ({claim.documents})
+                </h3>
+              </div>
+              <div className="documents-list">
+                {Array.from({ length: claim.documents }, (_, i) => (
+                  <div key={i} className="document-item">
+                    <FiFileText size={18} />
+                    <div className="document-info">
+                      <span className="document-name">Document_{i + 1}.pdf</span>
+                      <span className="document-meta">Uploaded on {format(new Date(claim.createdAt), 'MMM dd, yyyy')}</span>
+                    </div>
+                    <button className="btn btn-ghost btn-sm">
+                      <FiDownload size={14} />
+                      Download
+                    </button>
                   </div>
-                  <button className="btn btn-ghost btn-sm">
-                    <FiDownload size={14} />
-                  </button>
-                </div>
-              ))}
+                ))}
+                {claim.documents === 0 && (
+                  <div className="no-documents">
+                    <FiPaperclip size={32} />
+                    <p>No documents uploaded yet</p>
+                  </div>
+                )}
+              </div>
             </div>
           </motion.div>
         )}

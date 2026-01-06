@@ -2,135 +2,94 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { 
-  FiTrendingUp, 
-  FiTrendingDown, 
   FiFileText, 
   FiClock, 
   FiCheckCircle,
   FiAlertCircle,
-  FiDollarSign,
-  FiUsers,
+  FiUpload,
   FiPlus,
   FiArrowRight,
-  FiRefreshCw
+  FiPhone,
+  FiMessageSquare,
+  FiEye,
+  FiDollarSign
 } from 'react-icons/fi'
-import { 
-  LineChart, 
-  Line, 
-  AreaChart, 
-  Area,
-  BarChart, 
-  Bar, 
-  PieChart, 
-  Pie, 
-  Cell,
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  Legend
-} from 'recharts'
 import { useClaimsStore } from '../../store/claimsStore'
-import { format, subDays, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns'
+import { format } from 'date-fns'
 import './Dashboard.css'
 
-const COLORS = ['#003399', '#0066CC', '#10B981', '#F59E0B', '#EF4444']
+// Status step component for visual timeline
+function StatusStep({ step, current, completed }) {
+  return (
+    <div className={`status-step ${completed ? 'completed' : ''} ${current ? 'current' : ''}`}>
+      <div className="status-dot">
+        {completed ? <FiCheckCircle size={16} /> : step}
+      </div>
+    </div>
+  )
+}
+
+// Claim progress tracker component
+function ClaimProgressTracker({ status }) {
+  const steps = ['Submitted', 'Under Review', 'Decision', 'Payment']
+  const statusMap = {
+    'Pending': 1,
+    'Under Review': 2,
+    'Approved': 3,
+    'Denied': 3,
+    'Paid': 4
+  }
+  const currentStep = statusMap[status] || 1
+
+  return (
+    <div className="claim-progress-tracker">
+      <div className="progress-steps">
+        {steps.map((step, index) => (
+          <StatusStep 
+            key={step}
+            step={index + 1}
+            current={currentStep === index + 1}
+            completed={currentStep > index + 1}
+          />
+        ))}
+      </div>
+      <div className="progress-labels">
+        {steps.map((step, index) => (
+          <span key={step} className={currentStep >= index + 1 ? 'active' : ''}>
+            {step}
+          </span>
+        ))}
+      </div>
+      <div className="progress-line">
+        <div 
+          className="progress-fill" 
+          style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
+        />
+      </div>
+    </div>
+  )
+}
 
 function Dashboard() {
   const { claims, getStatistics } = useClaimsStore()
   const stats = getStatistics()
 
-  // Generate chart data
-  const claimsOverTime = useMemo(() => {
-    const last30Days = eachDayOfInterval({
-      start: subDays(new Date(), 29),
-      end: new Date()
-    })
-
-    return last30Days.map(day => {
-      const dayStr = format(day, 'yyyy-MM-dd')
-      const dayClaims = claims.filter(c => 
-        format(new Date(c.createdAt), 'yyyy-MM-dd') === dayStr
-      )
-      return {
-        date: format(day, 'MMM dd'),
-        claims: dayClaims.length,
-        amount: dayClaims.reduce((sum, c) => sum + c.amount, 0) / 1000
-      }
-    })
-  }, [claims])
-
-  const claimsByType = useMemo(() => {
-    const types = {}
-    claims.forEach(claim => {
-      types[claim.claimType] = (types[claim.claimType] || 0) + 1
-    })
-    return Object.entries(types).map(([name, value]) => ({ name, value }))
-  }, [claims])
-
-  const claimsByStatus = useMemo(() => {
-    return [
-      { name: 'Pending', value: stats.pending, color: '#F59E0B' },
-      { name: 'Under Review', value: stats.underReview, color: '#3B82F6' },
-      { name: 'Approved', value: stats.approved, color: '#10B981' },
-      { name: 'Denied', value: stats.denied, color: '#EF4444' },
-      { name: 'Paid', value: stats.paid, color: '#003399' },
-    ]
-  }, [stats])
-
-  const recentClaims = useMemo(() => {
+  // Get customer's claims (in real app, filtered by customer ID)
+  const myClaims = useMemo(() => {
     return [...claims]
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 5)
   }, [claims])
 
-  const monthlyComparison = useMemo(() => {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    return months.map((month, index) => {
-      const monthClaims = claims.filter(c => new Date(c.createdAt).getMonth() === index)
-      return {
-        month,
-        claims: monthClaims.length,
-        amount: monthClaims.reduce((sum, c) => sum + c.amount, 0) / 1000
-      }
-    })
+  // Get active claims (not paid/denied)
+  const activeClaims = useMemo(() => {
+    return claims.filter(c => !['Paid', 'Denied'].includes(c.status))
   }, [claims])
 
-  const statCards = [
-    {
-      title: 'Total Claims',
-      value: stats.total,
-      change: '+12%',
-      trend: 'up',
-      icon: FiFileText,
-      color: 'blue'
-    },
-    {
-      title: 'Pending Review',
-      value: stats.pending + stats.underReview,
-      change: '-5%',
-      trend: 'down',
-      icon: FiClock,
-      color: 'warning'
-    },
-    {
-      title: 'Total Amount',
-      value: `$${(stats.totalAmount / 1000000).toFixed(1)}M`,
-      change: '+8%',
-      trend: 'up',
-      icon: FiDollarSign,
-      color: 'green'
-    },
-    {
-      title: 'Avg Processing',
-      value: `${stats.avgProcessingTime} days`,
-      change: '-15%',
-      trend: 'down',
-      icon: FiCheckCircle,
-      color: 'purple'
-    }
-  ]
+  // Get claims needing action (documents, info needed)
+  const needsAction = useMemo(() => {
+    return claims.filter(c => c.status === 'Pending').slice(0, 3)
+  }, [claims])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -148,358 +107,267 @@ function Dashboard() {
   }
 
   return (
-    <div className="dashboard">
+    <div className="dashboard customer-dashboard">
       <div className="dashboard-header">
         <div>
-          <h1>Dashboard</h1>
-          <p className="dashboard-subtitle">Welcome back! Here's what's happening with your claims.</p>
+          <h1>Welcome Back, John!</h1>
+          <p className="dashboard-subtitle">Track your claims, upload documents, and get instant status updates</p>
         </div>
         <div className="dashboard-actions">
-          <button className="btn btn-secondary">
-            <FiRefreshCw size={16} />
-            Refresh
-          </button>
           <Link to="/claims/new" className="btn btn-primary">
             <FiPlus size={16} />
-            New Claim
+            File New Claim
           </Link>
         </div>
       </div>
 
-      {/* Stats Overview */}
+      {/* Quick Stats for Customer */}
       <motion.div 
-        className="stats-grid"
+        className="customer-stats-grid"
         id="stats-overview"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {statCards.map((stat, index) => (
-          <motion.div 
-            key={stat.title}
-            className={`stat-card stat-${stat.color}`}
-            variants={itemVariants}
-          >
-            <div className="stat-icon">
-              <stat.icon size={24} />
-            </div>
-            <div className="stat-content">
-              <span className="stat-title">{stat.title}</span>
-              <span className="stat-value">{stat.value}</span>
-              <span className={`stat-change ${stat.trend}`}>
-                {stat.trend === 'up' ? <FiTrendingUp size={14} /> : <FiTrendingDown size={14} />}
-                {stat.change} from last month
-              </span>
-            </div>
-          </motion.div>
-        ))}
+        <motion.div className="customer-stat-card" variants={itemVariants}>
+          <div className="stat-icon active">
+            <FiClock size={24} />
+          </div>
+          <div className="stat-content">
+            <span className="stat-value">{activeClaims.length}</span>
+            <span className="stat-label">Active Claims</span>
+          </div>
+        </motion.div>
+
+        <motion.div className="customer-stat-card" variants={itemVariants}>
+          <div className="stat-icon pending">
+            <FiAlertCircle size={24} />
+          </div>
+          <div className="stat-content">
+            <span className="stat-value">{needsAction.length}</span>
+            <span className="stat-label">Need Your Action</span>
+          </div>
+        </motion.div>
+
+        <motion.div className="customer-stat-card" variants={itemVariants}>
+          <div className="stat-icon success">
+            <FiCheckCircle size={24} />
+          </div>
+          <div className="stat-content">
+            <span className="stat-value">{stats.approved + stats.paid}</span>
+            <span className="stat-label">Approved This Year</span>
+          </div>
+        </motion.div>
+
+        <motion.div className="customer-stat-card" variants={itemVariants}>
+          <div className="stat-icon paid">
+            <FiDollarSign size={24} />
+          </div>
+          <div className="stat-content">
+            <span className="stat-value">${(stats.totalAmount / 1000).toFixed(0)}K</span>
+            <span className="stat-label">Total Claimed</span>
+          </div>
+        </motion.div>
       </motion.div>
 
-      {/* Charts Row */}
-      <div className="charts-grid">
-        {/* Claims Over Time */}
+      {/* Main Content Grid */}
+      <div className="dashboard-content-grid">
+        {/* My Active Claims */}
         <motion.div 
-          className="card chart-card"
-          id="claims-chart"
+          className="card active-claims-card"
+          id="recent-claims"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
           <div className="card-header">
-            <h3 className="card-title">Claims Trend (Last 30 Days)</h3>
-            <div className="chart-legend">
-              <span className="legend-item"><span className="legend-dot blue"></span> Claims</span>
-              <span className="legend-item"><span className="legend-dot green"></span> Amount (K)</span>
-            </div>
+            <h3 className="card-title">
+              <FiFileText size={20} />
+              My Active Claims
+            </h3>
+            <Link to="/claims" className="btn btn-ghost btn-sm">
+              View All
+              <FiArrowRight size={14} />
+            </Link>
           </div>
-          <div className="chart-container">
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={claimsOverTime}>
-                <defs>
-                  <linearGradient id="colorClaims" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#003399" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#003399" stopOpacity={0}/>
-                  </linearGradient>
-                  <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis 
-                  dataKey="date" 
-                  stroke="#9CA3AF"
-                  fontSize={12}
-                  tickLine={false}
-                />
-                <YAxis 
-                  stroke="#9CA3AF"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <Tooltip 
-                  contentStyle={{
-                    background: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'
-                  }}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="claims" 
-                  stroke="#003399" 
-                  strokeWidth={2}
-                  fillOpacity={1} 
-                  fill="url(#colorClaims)" 
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="amount" 
-                  stroke="#10B981" 
-                  strokeWidth={2}
-                  fillOpacity={1} 
-                  fill="url(#colorAmount)" 
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
-
-        {/* Claims by Status */}
-        <motion.div 
-          className="card chart-card"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <div className="card-header">
-            <h3 className="card-title">Claims by Status</h3>
-          </div>
-          <div className="chart-container pie-chart">
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={claimsByStatus}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={5}
-                  dataKey="value"
+          
+          <div className="active-claims-list">
+            {myClaims.length === 0 ? (
+              <div className="empty-state">
+                <FiFileText size={48} />
+                <h4>No claims yet</h4>
+                <p>When you file a claim, it will appear here</p>
+                <Link to="/claims/new" className="btn btn-primary">
+                  File Your First Claim
+                </Link>
+              </div>
+            ) : (
+              myClaims.map((claim) => (
+                <motion.div 
+                  key={claim.id}
+                  className="active-claim-item"
+                  whileHover={{ scale: 1.01 }}
                 >
-                  {claimsByStatus.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  contentStyle={{
-                    background: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'
-                  }}
-                />
-                <Legend 
-                  verticalAlign="bottom" 
-                  height={36}
-                  iconType="circle"
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Second Row */}
-      <div className="charts-grid">
-        {/* Monthly Comparison */}
-        <motion.div 
-          className="card chart-card"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <div className="card-header">
-            <h3 className="card-title">Monthly Claims Comparison</h3>
-          </div>
-          <div className="chart-container">
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={monthlyComparison}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis 
-                  dataKey="month" 
-                  stroke="#9CA3AF"
-                  fontSize={12}
-                  tickLine={false}
-                />
-                <YAxis 
-                  stroke="#9CA3AF"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <Tooltip 
-                  contentStyle={{
-                    background: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'
-                  }}
-                />
-                <Bar dataKey="claims" fill="#003399" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
-
-        {/* Claims by Type */}
-        <motion.div 
-          className="card chart-card"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <div className="card-header">
-            <h3 className="card-title">Claims by Type</h3>
-          </div>
-          <div className="chart-container">
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={claimsByType} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis type="number" stroke="#9CA3AF" fontSize={12} />
-                <YAxis 
-                  type="category" 
-                  dataKey="name" 
-                  stroke="#9CA3AF"
-                  fontSize={12}
-                  tickLine={false}
-                  width={80}
-                />
-                <Tooltip 
-                  contentStyle={{
-                    background: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'
-                  }}
-                />
-                <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                  {claimsByType.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Recent Claims */}
-      <motion.div 
-        className="card"
-        id="recent-claims"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-      >
-        <div className="card-header">
-          <h3 className="card-title">Recent Claims</h3>
-          <Link to="/claims" className="btn btn-ghost btn-sm">
-            View All
-            <FiArrowRight size={14} />
-          </Link>
-        </div>
-        <div className="table-container">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Claim ID</th>
-                <th>Customer</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentClaims.map((claim) => (
-                <tr key={claim.id}>
-                  <td>
-                    <Link to={`/claims/${claim.id}`} className="claim-link">
-                      {claim.claimNumber}
-                    </Link>
-                  </td>
-                  <td>{claim.customerName}</td>
-                  <td>
-                    <span className="badge badge-neutral">{claim.claimType}</span>
-                  </td>
-                  <td className="amount">${claim.amount.toLocaleString()}</td>
-                  <td>
-                    <span className={`badge badge-${getStatusColor(claim.status)}`}>
+                  <div className="claim-header">
+                    <div className="claim-info">
+                      <span className="claim-number">{claim.claimNumber}</span>
+                      <span className={`claim-type ${claim.claimType.toLowerCase()}`}>
+                        {claim.claimType}
+                      </span>
+                    </div>
+                    <span className={`status-badge ${claim.status.toLowerCase().replace(' ', '-')}`}>
                       {claim.status}
                     </span>
-                  </td>
-                  <td>{format(new Date(claim.createdAt), 'MMM dd, yyyy')}</td>
-                  <td>
-                    <Link to={`/claims/${claim.id}`} className="btn btn-ghost btn-sm">
-                      View
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </motion.div>
+                  </div>
+                  
+                  <ClaimProgressTracker status={claim.status} />
+                  
+                  <div className="claim-details">
+                    <div className="claim-detail">
+                      <span className="label">Filed:</span>
+                      <span className="value">{format(new Date(claim.createdAt), 'MMM dd, yyyy')}</span>
+                    </div>
+                    <div className="claim-detail">
+                      <span className="label">Amount:</span>
+                      <span className="value amount">${claim.amount.toLocaleString()}</span>
+                    </div>
+                    <div className="claim-detail">
+                      <span className="label">Last Update:</span>
+                      <span className="value">{format(new Date(claim.updatedAt), 'MMM dd, yyyy')}</span>
+                    </div>
+                  </div>
 
-      {/* Quick Actions */}
-      <motion.div 
-        className="quick-actions"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-      >
-        <div className="card quick-action-card">
-          <FiFileText size={32} className="quick-action-icon" />
-          <h4>Submit New Claim</h4>
-          <p>Create a new insurance claim with all required documentation.</p>
-          <Link to="/claims/new" className="btn btn-primary">
-            Get Started
-          </Link>
+                  <div className="claim-actions">
+                    <Link to={`/claims/${claim.id}`} className="btn btn-secondary btn-sm">
+                      <FiEye size={14} />
+                      View Details
+                    </Link>
+                    <button className="btn btn-ghost btn-sm">
+                      <FiUpload size={14} />
+                      Upload Docs
+                    </button>
+                  </div>
+                </motion.div>
+              ))
+            )}
+          </div>
+        </motion.div>
+
+        {/* Right Sidebar */}
+        <div className="dashboard-sidebar">
+          {/* Action Required */}
+          {needsAction.length > 0 && (
+            <motion.div 
+              className="card action-required-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="card-header">
+                <h3 className="card-title">
+                  <FiAlertCircle size={20} />
+                  Action Required
+                </h3>
+              </div>
+              <div className="action-items">
+                {needsAction.map((claim) => (
+                  <div key={claim.id} className="action-item">
+                    <div className="action-icon">
+                      <FiUpload size={18} />
+                    </div>
+                    <div className="action-content">
+                      <span className="action-title">Upload Documents</span>
+                      <span className="action-claim">{claim.claimNumber}</span>
+                    </div>
+                    <Link to={`/claims/${claim.id}`} className="btn btn-sm btn-secondary">
+                      Upload
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Quick Actions */}
+          <motion.div 
+            className="card quick-actions-card"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <div className="card-header">
+              <h3 className="card-title">Quick Actions</h3>
+            </div>
+            <div className="quick-action-buttons">
+              <Link to="/claims/new" className="quick-action-btn">
+                <FiPlus size={20} />
+                <span>File New Claim</span>
+              </Link>
+              <Link to="/claims" className="quick-action-btn">
+                <FiFileText size={20} />
+                <span>View All Claims</span>
+              </Link>
+              <button className="quick-action-btn">
+                <FiUpload size={20} />
+                <span>Upload Documents</span>
+              </button>
+            </div>
+          </motion.div>
+
+          {/* Need Help? */}
+          <motion.div 
+            className="card help-card"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <div className="help-content">
+              <h4>Need Help?</h4>
+              <p>Our team is available 24/7 to assist you with your claims.</p>
+              <div className="help-buttons">
+                <button className="btn btn-secondary btn-sm">
+                  <FiPhone size={14} />
+                  Call Us
+                </button>
+                <button className="btn btn-ghost btn-sm">
+                  <FiMessageSquare size={14} />
+                  Live Chat
+                </button>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Self-Service Benefits */}
+          <motion.div 
+            className="card benefits-card"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+          >
+            <h4>Why Self-Service?</h4>
+            <ul className="benefits-list">
+              <li>
+                <FiCheckCircle size={16} />
+                <span>Track claims 24/7 without waiting on hold</span>
+              </li>
+              <li>
+                <FiCheckCircle size={16} />
+                <span>Upload documents securely from anywhere</span>
+              </li>
+              <li>
+                <FiCheckCircle size={16} />
+                <span>Get instant notifications on status changes</span>
+              </li>
+              <li>
+                <FiCheckCircle size={16} />
+                <span>View complete claim history at a glance</span>
+              </li>
+            </ul>
+          </motion.div>
         </div>
-        <div className="card quick-action-card">
-          <FiUsers size={32} className="quick-action-icon" />
-          <h4>Customer Lookup</h4>
-          <p>Search for existing customers and view their claim history.</p>
-          <Link to="/customers" className="btn btn-secondary">
-            Search
-          </Link>
-        </div>
-        <div className="card quick-action-card">
-          <FiAlertCircle size={32} className="quick-action-icon" />
-          <h4>Pending Actions</h4>
-          <p>Review claims that require your attention or approval.</p>
-          <Link to="/claims?status=Pending" className="btn btn-secondary">
-            View Pending
-          </Link>
-        </div>
-      </motion.div>
+      </div>
     </div>
   )
-}
-
-function getStatusColor(status) {
-  const colors = {
-    'Pending': 'warning',
-    'Under Review': 'info',
-    'Approved': 'success',
-    'Denied': 'danger',
-    'Paid': 'success'
-  }
-  return colors[status] || 'neutral'
 }
 
 export default Dashboard
