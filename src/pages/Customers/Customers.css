@@ -1,0 +1,246 @@
+.customers-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.customers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-xl);
+}
+
+.customers-header h1 {
+  margin-bottom: var(--space-xs);
+}
+
+.customers-subtitle {
+  color: var(--gray-500);
+  margin: 0;
+}
+
+/* Search Bar */
+.search-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: white;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+}
+
+.search-bar:focus-within {
+  border-color: var(--zurich-blue);
+  box-shadow: 0 0 0 3px rgba(0, 51, 153, 0.1);
+}
+
+.search-bar svg {
+  color: var(--gray-400);
+}
+
+.search-bar .search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.view-toggle {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  padding: 4px;
+}
+
+.toggle-btn {
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  background: transparent;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.toggle-btn:hover {
+  color: var(--gray-800);
+}
+
+.toggle-btn.active {
+  background: white;
+  color: var(--zurich-blue);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Customers Grid */
+.customers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.customer-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+}
+
+.customer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.customer-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-md);
+}
+
+.customer-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--zurich-blue), var(--zurich-light-blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.customer-avatar.small {
+  width: 32px;
+  height: 32px;
+  font-size: 0.875rem;
+}
+
+.more-btn {
+  background: none;
+  border: none;
+  color: var(--gray-400);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.more-btn:hover {
+  color: var(--gray-600);
+}
+
+.customer-info {
+  margin-bottom: var(--space-lg);
+}
+
+.customer-info h3 {
+  margin-bottom: var(--space-md);
+  font-size: 1.125rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-xs);
+}
+
+.contact-item svg {
+  color: var(--gray-400);
+  flex-shrink: 0;
+}
+
+.customer-stats {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--gray-100);
+  margin-bottom: var(--space-md);
+}
+
+.customer-stats .stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--gray-600);
+  font-size: 0.875rem;
+}
+
+.customer-stats .stat svg {
+  color: var(--zurich-blue);
+}
+
+.customer-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.customer-actions .btn {
+  flex: 1;
+}
+
+/* Table View */
+.customer-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl);
+  background: white;
+  border-radius: var(--radius-lg);
+}
+
+.empty-state svg {
+  color: var(--gray-300);
+  margin-bottom: var(--space-lg);
+}
+
+.empty-state h3 {
+  margin-bottom: var(--space-sm);
+}
+
+.empty-state p {
+  color: var(--gray-500);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .customers-header {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  .search-bar-container {
+    flex-direction: column;
+  }
+  
+  .search-bar {
+    max-width: none;
+    width: 100%;
+  }
+  
+  .customers-grid {
+    grid-template-columns: 1fr;
+  }
+}
