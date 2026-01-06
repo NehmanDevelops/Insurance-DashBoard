@@ -1,0 +1,145 @@
+.demo-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9000;
+  pointer-events: none;
+}
+
+.demo-spotlight {
+  position: fixed;
+  border-radius: var(--radius-lg);
+  box-shadow: 
+    0 0 0 9999px rgba(0, 0, 0, 0.6),
+    0 0 0 4px var(--zurich-blue),
+    0 0 20px rgba(0, 51, 153, 0.5);
+  z-index: 9001;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.demo-tooltip {
+  position: fixed;
+  width: 360px;
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  z-index: 9002;
+  padding: var(--space-lg);
+}
+
+.demo-tooltip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.demo-step-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--zurich-blue);
+  background: var(--zurich-sky);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.demo-close {
+  background: none;
+  border: none;
+  color: var(--gray-400);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast);
+}
+
+.demo-close:hover {
+  color: var(--gray-600);
+}
+
+.demo-tooltip-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--space-sm);
+}
+
+.demo-tooltip-content {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  line-height: 1.6;
+  margin-bottom: var(--space-lg);
+}
+
+.demo-progress {
+  margin-bottom: var(--space-lg);
+}
+
+.demo-progress-bar {
+  height: 4px;
+  background: var(--gray-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.demo-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--zurich-blue), var(--zurich-light-blue));
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+}
+
+.demo-tooltip-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.demo-tooltip-actions .btn {
+  flex: 1;
+}
+
+.demo-steps-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.demo-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--gray-300);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-fast);
+}
+
+.demo-step-dot:hover {
+  background: var(--gray-400);
+  transform: scale(1.2);
+}
+
+.demo-step-dot.active {
+  background: var(--zurich-blue);
+  width: 20px;
+}
+
+.demo-step-dot.completed {
+  background: var(--zurich-light-blue);
+}
+
+@media (max-width: 768px) {
+  .demo-tooltip {
+    width: calc(100% - 32px);
+    left: 16px !important;
+    right: 16px;
+    bottom: 16px;
+    top: auto !important;
+  }
+}
