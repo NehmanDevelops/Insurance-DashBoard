@@ -13,21 +13,7 @@ import {
   FiCheck
 } from 'react-icons/fi'
 import { useClaimsStore } from '../../store/claimsStore'
-import './NewClaim.css'
-
-const claimTypes = ['Auto', 'Property', 'Liability', 'Health', 'Life', 'Travel']
-const priorities = ['Low', 'Medium', 'High', 'Critical']
-
-function NewClaim() {
-  const navigate = useNavigate()
-  const { addClaim } = useClaimsStore()
-  const [currentStep, setCurrentStep] = useState(1)
-  const [formData, setFormData] = useState({
-    customerName: '',
-    customerEmail: '',
-    customerPhone: '',
-    policyNumber: '',
-    claimType: '',
+import ZurichLogo from '../../components/ZurichLogo/ZurichLogo'
     priority: 'Medium',
     amount: '',
     estimatedAmount: '',

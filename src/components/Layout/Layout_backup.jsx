@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
@@ -105,7 +105,7 @@ import ZurichLogo from '../ZurichLogo/ZurichLogo'
                 placeholder="Search your claims..." 
                 className="search-input"
               />
-              <span className="search-shortcut">⌘K</span>
+              <span className="search-shortcut">âŒ˜K</span>
             </div>
           </div>
 
@@ -281,3 +281,4 @@ import ZurichLogo from '../ZurichLogo/ZurichLogo'
 }
 
 export default Layout
+

@@ -1,0 +1,64 @@
+.zurich-logo,
+.zurich-logo-icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.zurich-logo-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.zurich-logo-horizontal .zurich-wordmark {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1A67A7;
+  letter-spacing: 1px;
+}
+
+.zurich-logo-stacked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.zurich-logo-stacked .zurich-wordmark-stacked {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1A67A7;
+  letter-spacing: 3px;
+}
+
+.zurich-logo-stacked.small .zurich-wordmark-stacked {
+  font-size: 1rem;
+  letter-spacing: 2px;
+}
+
+.zurich-logo-stacked.large .zurich-wordmark-stacked {
+  font-size: 1.5rem;
+  letter-spacing: 4px;
+}
+
+.zurich-logo-stacked.xlarge .zurich-wordmark-stacked {
+  font-size: 1.75rem;
+  letter-spacing: 5px;
+}
+
+/* White variant for dark backgrounds */
+.zurich-logo-horizontal.white .zurich-wordmark {
+  color: white;
+}
+
+.zurich-logo-horizontal.white svg circle {
+  fill: white;
+}
+
+.zurich-logo-horizontal.white svg path {
+  stroke: #1A67A7;
+}
+
+.zurich-logo-stacked.white .zurich-wordmark-stacked {
+  color: white;
+}

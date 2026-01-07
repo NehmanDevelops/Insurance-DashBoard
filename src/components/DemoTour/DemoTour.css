@@ -35,6 +35,16 @@
   margin-bottom: var(--space-md);
 }
 
+.demo-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.demo-logo {
+  flex-shrink: 0;
+}
+
 .demo-step-badge {
   font-size: 0.75rem;
   font-weight: 600;

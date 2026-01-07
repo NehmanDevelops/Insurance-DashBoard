@@ -731,6 +731,16 @@
   margin-top: 2px;
 }
 
+/* Help Card with Zurich Logo */
+.help-card .help-content {
+  text-align: center;
+}
+
+.help-card .help-logo {
+  margin-bottom: var(--space-sm);
+  opacity: 0.8;
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
   .customer-stats-grid {

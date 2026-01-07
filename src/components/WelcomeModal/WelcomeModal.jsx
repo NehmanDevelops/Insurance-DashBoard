@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { FiPlay, FiX, FiCheck, FiArrowRight, FiCode, FiGithub, FiPhone, FiClock, FiUpload, FiShield } from 'react-icons/fi'
+import ZurichLogo from '../ZurichLogo/ZurichLogo'
 import './WelcomeModal.css'
 
 function WelcomeModal({ onStartDemo, onSkip }) {
@@ -21,13 +22,13 @@ function WelcomeModal({ onStartDemo, onSkip }) {
   ]
 
   return (
-    <motion.div 
+    <motion.div
       className="welcome-overlay"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <motion.div 
+      <motion.div
         className="welcome-modal"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -38,7 +39,7 @@ function WelcomeModal({ onStartDemo, onSkip }) {
         </button>
 
         {/* TLDR Banner */}
-        <motion.div 
+        <motion.div
           className="tldr-banner"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -49,9 +50,9 @@ function WelcomeModal({ onStartDemo, onSkip }) {
             <span className="tldr-label">TL;DR</span>
             <span className="tldr-text">MADE BY <strong>NEHMAN RAHIMI</strong> TO CONTRIBUTE TO <strong>ZURICH CANADA</strong></span>
           </div>
-          <a 
-            href="https://github.com/NehmanDevelops/Insurance-DashBoard" 
-            target="_blank" 
+          <a
+            href="https://github.com/NehmanDevelops/Insurance-DashBoard"
+            target="_blank"
             rel="noopener noreferrer"
             className="tldr-github"
           >
@@ -61,13 +62,9 @@ function WelcomeModal({ onStartDemo, onSkip }) {
 
         <div className="welcome-header">
           <div className="welcome-logo">
-            <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="60" height="60" rx="12" fill="#003399"/>
-              <path d="M12 30C12 20.059 20.059 12 30 12C39.941 12 48 20.059 48 30C48 39.941 39.941 48 30 48C20.059 48 12 39.941 12 30Z" fill="white" fillOpacity="0.2"/>
-              <path d="M30 18V42M18 30H42" stroke="white" strokeWidth="4" strokeLinecap="round"/>
-            </svg>
+            <ZurichLogo variant="icon" size="xlarge" />
           </div>
-          <h1>Customer Claims Portal</h1>
+          <h1>Zurich Customer Claims Portal</h1>
           <p className="welcome-subtitle">
             Track your insurance claims, upload documents, and get real-time status updates — all without making a phone call
           </p>
@@ -78,7 +75,7 @@ function WelcomeModal({ onStartDemo, onSkip }) {
             <h3>🎯 What You Can Do Here:</h3>
             <ul>
               {features.map((feature, index) => (
-                <motion.li 
+                <motion.li
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -95,7 +92,7 @@ function WelcomeModal({ onStartDemo, onSkip }) {
             <h3>💡 Why Self-Service?</h3>
             <div className="benefits-grid">
               {benefits.map((benefit, index) => (
-                <motion.div 
+                <motion.div
                   key={benefit.title}
                   className="benefit-item"
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -145,6 +142,7 @@ function WelcomeModal({ onStartDemo, onSkip }) {
         </div>
 
         <div className="welcome-footer">
+          <ZurichLogo size="small" className="footer-logo" />
           <p>Built with ❤️ by Nehman Rahimi • A Self-Service Solution for Zurich Canada • January 2026</p>
         </div>
       </motion.div>

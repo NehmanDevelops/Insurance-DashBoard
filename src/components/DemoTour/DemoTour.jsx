@@ -3,13 +3,14 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiX, FiArrowLeft, FiArrowRight, FiCheck, FiPhone, FiClock, FiUpload, FiShield, FiBell, FiDollarSign } from 'react-icons/fi'
 import { useDemoStore } from '../../store/demoStore'
+import ZurichLogo from '../ZurichLogo/ZurichLogo'
 import './DemoTour.css'
 
 const tourSteps = [
   {
     id: 1,
     target: '#sidebar',
-    title: '👋 Welcome to Your Claims Portal',
+    title: '👋 Welcome to Zurich Claims Portal',
     content: 'This self-service portal lets you track claims, upload documents, and get real-time updates — all without calling our support line. Let\'s see how it saves you time!',
     benefit: 'No more waiting on hold',
     problem: '40% of support calls are just status checks',
@@ -49,7 +50,7 @@ const tourSteps = [
   {
     id: 5,
     target: '#nav-claims',
-    title: '📁 View All Your Claims',
+    title: '🔍 View All Your Claims',
     content: 'Access your complete claims history. Filter by status, type, or date to find exactly what you need.',
     benefit: 'Complete history at your fingertips',
     problem: 'Hard to track multiple claims',
@@ -60,7 +61,7 @@ const tourSteps = [
   {
     id: 6,
     target: '#claims-filters',
-    title: '🔍 Find Claims Quickly',
+    title: '🔎 Find Claims Quickly',
     content: 'Use filters to find specific claims by status (Pending, Approved, Paid) or claim type (Auto, Property, Health). Search by claim number for instant results.',
     benefit: 'Find any claim in seconds',
     problem: 'Customers forget claim numbers',
@@ -103,7 +104,7 @@ const tourSteps = [
     id: 10,
     target: '#nav-dashboard',
     title: '🎉 You\'re All Set!',
-    content: 'This self-service portal reduces call center volume by 40% while giving you 24/7 access. Track claims, upload documents, and get updates instantly. Built by Nehman Rahimi for Zurich Canada.',
+    content: 'This Zurich self-service portal reduces call center volume by 40% while giving you 24/7 access. Track claims, upload documents, and get updates instantly. Built by Nehman Rahimi for Zurich Canada.',
     benefit: 'Better service, lower costs',
     problem: 'Each status call costs $8-12',
     position: 'right',
@@ -133,16 +134,16 @@ function DemoTour() {
     // Find and highlight the target element
     const findTarget = () => {
       if (!step) return
-      
+
       const element = document.querySelector(step.target)
       if (element) {
         setTargetElement(element)
-        
+
         // Calculate tooltip position
         const rect = element.getBoundingClientRect()
         const pos = calculatePosition(rect, step.position)
         setTooltipPosition(pos)
-        
+
         // Scroll element into view
         element.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }
@@ -222,10 +223,10 @@ function DemoTour() {
     <>
       {/* Overlay */}
       <div className="demo-overlay" />
-      
+
       {/* Spotlight */}
       {targetElement && (
-        <div 
+        <div
           className="demo-spotlight"
           style={{
             top: targetElement.getBoundingClientRect().top - 8,
@@ -251,7 +252,10 @@ function DemoTour() {
           transition={{ duration: 0.2 }}
         >
           <div className="demo-tooltip-header">
-            <span className="demo-step-badge">Step {currentStep + 1} of {totalSteps}</span>
+            <div className="demo-header-left">
+              <ZurichLogo variant="icon" size="small" className="demo-logo" />
+              <span className="demo-step-badge">Step {currentStep + 1} of {totalSteps}</span>
+            </div>
             <button className="demo-close" onClick={handleSkip} aria-label="Close tour">
               <FiX size={18} />
             </button>
@@ -259,7 +263,7 @@ function DemoTour() {
 
           <h3 className="demo-tooltip-title">{step.title}</h3>
           <p className="demo-tooltip-content">{step.content}</p>
-          
+
           {step.benefit && (
             <div className="demo-tooltip-meta">
               <div className="demo-meta-item benefit">
@@ -280,8 +284,8 @@ function DemoTour() {
           </div>
 
           <div className="demo-tooltip-actions">
-            <button 
-              className="btn btn-ghost" 
+            <button
+              className="btn btn-ghost"
               onClick={handlePrev}
               disabled={currentStep === 0}
             >
