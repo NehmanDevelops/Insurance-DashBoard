@@ -105,9 +105,15 @@
 }
 
 .welcome-logo {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto var(--space-md);
+  width: 280px;
+  height: auto;
+  margin: 0 auto var(--space-lg);
+}
+
+.welcome-logo img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .welcome-logo svg {

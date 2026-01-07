@@ -16,7 +16,24 @@ import {
 } from 'react-icons/fi'
 import { useClaimsStore } from '../../store/claimsStore'
 import { format } from 'date-fns'
-import ZurichLogo from '../../components/ZurichLogo/ZurichLogo'
+import './Dashboard.css'
+
+// Status step component for visual timeline
+function StatusStep({ step, current, completed }) {
+  return (
+    <div className={`status-step ${completed ? 'completed' : ''} ${current ? 'current' : ''}`}>
+      <div className="status-dot">
+        {completed ? <FiCheckCircle size={16} /> : step}
+      </div>
+    </div>
+  )
+}
+
+// Claim progress tracker component
+function ClaimProgressTracker({ status }) {
+  const steps = ['Submitted', 'Under Review', 'Decision', 'Payment']
+  const statusMap = {
+    'Pending': 1,
     'Under Review': 2,
     'Approved': 3,
     'Denied': 3,
@@ -305,9 +322,16 @@ function Dashboard() {
             transition={{ delay: 0.6 }}
           >
             <div className="help-content">
-              <ZurichLogo variant="icon" size="small" className="help-logo" />
               <h4>Need Help?</h4>
-              <p>Our Zurich team is available 24/7 to assist you with your claims.</p>
+              <p>Our team is available 24/7 to assist you with your claims.</p>
+              <div className="help-buttons">
+                <button className="btn btn-secondary btn-sm">
+                  <FiPhone size={14} />
+                  Call Us
+                </button>
+                <button className="btn btn-ghost btn-sm">
+                  <FiMessageSquare size={14} />
+                  Live Chat
                 </button>
               </div>
             </div>

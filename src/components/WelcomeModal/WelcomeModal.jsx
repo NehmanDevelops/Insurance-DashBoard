@@ -62,9 +62,9 @@ function WelcomeModal({ onStartDemo, onSkip }) {
 
         <div className="welcome-header">
           <div className="welcome-logo">
-            <ZurichLogo variant="icon" size="xlarge" />
+            <ZurichLogo variant="full" size="xlarge" />
           </div>
-          <h1>Zurich Customer Claims Portal</h1>
+          <h1>Customer Claims Portal</h1>
           <p className="welcome-subtitle">
             Track your insurance claims, upload documents, and get real-time status updates — all without making a phone call
           </p>
@@ -143,7 +143,7 @@ function WelcomeModal({ onStartDemo, onSkip }) {
 
         <div className="welcome-footer">
           <ZurichLogo size="small" className="footer-logo" />
-          <p>Built with ❤️ by Nehman Rahimi • A Self-Service Solution for Zurich Canada • January 2026</p>
+          <p>Demo by Nehman • A Self-Service Solution for Zurich Canada • January 2026</p>
         </div>
       </motion.div>
     </motion.div>

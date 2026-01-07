@@ -17,7 +17,25 @@ import {
   FiPhone
 } from 'react-icons/fi'
 import { useDemoStore } from '../../store/demoStore'
-import ZurichLogo from '../ZurichLogo/ZurichLogo'
+import './Layout.css'
+
+const navItems = [
+  { path: '/', icon: FiHome, label: 'My Claims', id: 'nav-dashboard' },
+  { path: '/claims', icon: FiFileText, label: 'Track Claims', id: 'nav-claims' },
+  { path: '/claims/new', icon: FiUpload, label: 'File New Claim', id: 'nav-new-claim' },
+  { path: '/settings', icon: FiUser, label: 'My Profile', id: 'nav-settings' },
+]
+
+function Layout({ children }) {
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [notificationsOpen, setNotificationsOpen] = useState(false)
+  const location = useLocation()
+  const { isDemoMode, startDemo } = useDemoStore()
+
+  const notifications = [
+    { id: 1, title: 'Claim status updated', message: 'Your auto claim CLM-2025-00051 is now Under Review', time: '5 min ago', unread: true },
     { id: 2, title: 'Document received', message: 'We received your photos for CLM-2025-00051', time: '1 hour ago', unread: true },
     { id: 3, title: 'Action needed', message: 'Please upload police report for CLM-2025-00045', time: '2 hours ago', unread: false },
     { id: 4, title: 'Payment sent!', message: '$2,340 deposited for CLM-2025-00028', time: 'Yesterday', unread: false },
@@ -30,10 +48,14 @@ import ZurichLogo from '../ZurichLogo/ZurichLogo'
         <div className="sidebar-header">
           <div className="logo">
             <div className="logo-icon">
-              <ZurichLogo variant="icon" size="small" />
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="8" fill="white"/>
+                <path d="M8 20C8 13.373 13.373 8 20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20Z" fill="#003399"/>
+                <path d="M20 12V28M12 20H28" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+              </svg>
             </div>
             {sidebarOpen && (
-              <motion.div
+              <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="logo-text"

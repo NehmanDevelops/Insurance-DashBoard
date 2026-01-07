@@ -1,4 +1,5 @@
 import './ZurichLogo.css'
+import zurichLogo from '../../assets/zurich.png'
 
 // Official Zurich Insurance Logo Component
 function ZurichLogo({ size = 'medium', variant = 'full', className = '' }) {
@@ -11,7 +12,7 @@ function ZurichLogo({ size = 'medium', variant = 'full', className = '' }) {
 
   const { width, height } = sizes[size] || sizes.medium
 
-  // Icon only variant (just the Z circle)
+  // Icon only variant (just the Z circle) - keeping SVG for icon
   if (variant === 'icon') {
     const iconSize = size === 'small' ? 32 : size === 'large' ? 56 : size === 'xlarge' ? 72 : 40
     return (
@@ -36,99 +37,47 @@ function ZurichLogo({ size = 'medium', variant = 'full', className = '' }) {
     )
   }
 
-  // Full logo with wordmark
+  // Full logo with actual Zurich image
   return (
-    <svg
+    <img
+      src={zurichLogo}
+      alt="Zurich Insurance"
       className={`zurich-logo ${className}`}
-      width={width}
-      height={height}
-      viewBox="0 0 280 90"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Z Circle Icon */}
-      <circle cx="45" cy="45" r="43" fill="#1A67A7" />
-      <path
-        d="M22 28H68L22 62H68"
-        stroke="white"
-        strokeWidth="7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-      
-      {/* ZURICH Text */}
-      <text
-        x="100"
-        y="58"
-        fontFamily="Arial, Helvetica, sans-serif"
-        fontSize="42"
-        fontWeight="bold"
-        fill="#1A67A7"
-        letterSpacing="2"
-      >
-        ZURICH
-      </text>
-    </svg>
+      style={{ width: width, height: 'auto', maxHeight: height, objectFit: 'contain' }}
+    />
   )
 }
 
-// Horizontal logo for headers
+// Horizontal logo for headers - using actual image
 export function ZurichLogoHorizontal({ className = '' }) {
   return (
     <div className={`zurich-logo-horizontal ${className}`}>
-      <svg
-        width="36"
-        height="36"
-        viewBox="0 0 100 100"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="50" cy="50" r="48" fill="#1A67A7" />
-        <path
-          d="M28 35H72L28 65H72"
-          stroke="white"
-          strokeWidth="8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-      </svg>
-      <span className="zurich-wordmark">Zurich</span>
+      <img
+        src={zurichLogo}
+        alt="Zurich Insurance"
+        style={{ height: 36, width: 'auto', objectFit: 'contain' }}
+      />
     </div>
   )
 }
 
-// Stacked logo for welcome screens
+// Stacked logo for welcome screens - using actual image
 export function ZurichLogoStacked({ size = 'medium', className = '' }) {
-  const iconSizes = {
+  const heights = {
     small: 48,
     medium: 64,
     large: 80,
     xlarge: 100
   }
-  const iconSize = iconSizes[size] || iconSizes.medium
+  const logoHeight = heights[size] || heights.medium
 
   return (
     <div className={`zurich-logo-stacked ${size} ${className}`}>
-      <svg
-        width={iconSize}
-        height={iconSize}
-        viewBox="0 0 100 100"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="50" cy="50" r="48" fill="#1A67A7" />
-        <path
-          d="M28 35H72L28 65H72"
-          stroke="white"
-          strokeWidth="8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-      </svg>
-      <span className="zurich-wordmark-stacked">ZURICH</span>
+      <img
+        src={zurichLogo}
+        alt="Zurich Insurance"
+        style={{ height: logoHeight, width: 'auto', objectFit: 'contain' }}
+      />
     </div>
   )
 }
