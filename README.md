@@ -109,3 +109,4 @@ A self-service solution proposal for Zurich Canada demonstrating how modern web 
 ---
 
 *"We are committed to inclusion, accessibility, and equity."* — Zurich Canada
+
