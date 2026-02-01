@@ -3,6 +3,9 @@
 ![Zurich Logo](https://img.shields.io/badge/Zurich-Canada-003399?style=for-the-badge)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
 ![Vite](https://img.shields.io/badge/Vite-7.x-646CFF?style=flat-square&logo=vite)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=flat-square&logo=vercel)](https://insurance-dash-board.vercel.app)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-222222?style=flat-square&logo=github)](https://nehmandevelops.github.io/Insurance-DashBoard/)
+
 
 ## 🎯 The Problem We're Solving
 
