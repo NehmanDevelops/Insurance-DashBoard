@@ -17,12 +17,25 @@ const queryClient = new QueryClient({
   },
 })
 
+// Determine the basename dynamically:
+// - On Vercel (or any root-hosted deployment), use '/'
+// - On GitHub Pages, use '/Insurance-DashBoard'
+const getBasename = () => {
+  // Check if we're on GitHub Pages by looking at the hostname
+  if (window.location.hostname.includes('github.io')) {
+    return '/Insurance-DashBoard'
+  }
+  // Default to root for Vercel and local development
+  return '/'
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter basename="/Insurance-DashBoard">
+      <BrowserRouter basename={getBasename()}>
         <App />
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>,
 )
+
